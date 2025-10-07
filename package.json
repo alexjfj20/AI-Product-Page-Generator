@@ -1,0 +1,43 @@
+{
+  "name": "copy-of-ai-product-page-generator",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "18.2.0",
+    "@google/genai": "^1.5.1",
+    "react-dom": "18.2.0",
+    "uuid": "^11.1.0",
+    "./utils": "latest",
+    "./services/authService": "latest",
+    "./services/productService": "latest",
+    "./services/dataServiceKeys": "latest",
+    "./services/businessSettingsService": "latest",
+    "./services/cartService": "latest",
+    "./services/orderService": "latest",
+    "./services/onboardingService": "latest",
+    "./services/aiService": "latest",
+    "./services/adminAccountService": "latest",
+    "./services/subscriptionPlanService": "latest",
+    "./services/aiProviderConfigService": "latest",
+    "./services/adminMessagingService": "latest",
+    "./services/backupService": "latest",
+    "pg": "^8.16.2",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
+  }
+}

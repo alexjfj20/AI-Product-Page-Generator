@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generador AI de Páginas de Producto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Light Theme Variables */
+      --app-primary-color: #2563eb; /* Tailwind blue-600 */
+      --bg-default: #f1f5f9;    /* Tailwind neutral-100 for body */
+      --bg-card: #ffffff;       /* White for cards/surfaces */
+      --text-default: #1e293b;  /* Tailwind neutral-800 for body text */
+      --text-muted: #475569;    /* Tailwind neutral-600 for muted text */
+      --border-default: #cbd5e1; /* Tailwind neutral-300 for borders */
+    }
+
+    html.dark-mode {
+      /* Dark Theme Variables */
+      --app-primary-color: #60a5fa; /* Tailwind blue-400 for dark mode */
+      --bg-default: #121212;
+      --bg-card: #1E1E1E;
+      --text-default: #E0E0E0;
+      --text-muted: #B0B0B0;
+      --border-default: #383838;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: var(--bg-default);
+      color: var(--text-default);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Generic transitions for elements that might change theme colors */
+    .themed-transition {
+        transition-property: color, background-color, border-color;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 200ms;
+    }
+    
+    /* Ensure focus rings are visible and adapt if possible */
+    *:focus-visible {
+        outline-color: var(--app-primary-color) !important; /* Override Tailwind's default focus to use theme color */
+        outline-style: solid !important;
+        outline-width: 2px !important;
+        outline-offset: 2px !important;
+    }
+    html.dark-mode *:focus-visible {
+        outline-color: var(--app-primary-color) !important;
+    }
+
+
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: var(--bg-default); 
+        border-radius: 3px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: var(--text-muted); 
+        border-radius: 3px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: var(--app-primary-color); 
+    }
+    .custom-scrollbar {
+        scrollbar-width: thin;
+        scrollbar-color: var(--text-muted) var(--bg-default);
+    }
+
+    .custom-scrollbar-thin::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scrollbar-thin::-webkit-scrollbar-track {
+      background: transparent; 
+    }
+    .custom-scrollbar-thin::-webkit-scrollbar-thumb {
+      background: var(--text-muted); 
+      border-radius: 2px;
+    }
+    .custom-scrollbar-thin::-webkit-scrollbar-thumb:hover {
+      background: var(--app-primary-color); 
+    }
+    .custom-scrollbar-thin {
+      scrollbar-width: thin;
+      scrollbar-color: var(--text-muted) transparent;
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      darkMode: 'class', // Enable class-based dark mode
+      theme: {
+        extend: {
+          colors: {
+            primary: 'var(--app-primary-color)', // Usar la variable CSS para el color primario
+            success: '#10b981', 
+            // Tailwind's neutral palette will be used as fallback or explicitly.
+            // If you want to make Tailwind's `bg-neutral-100` automatically themeable,
+            // you'd need to redefine the neutral palette here using CSS variables.
+            // For now, components will need `dark:bg-darkNeutral-100` etc.
+            // Or, use semantic names like `bg-bgDefault`, `bg-bgCard` if you map them here.
+            bgDefault: 'var(--bg-default)',
+            bgCard: 'var(--bg-card)',
+            textDefault: 'var(--text-default)',
+            textMuted: 'var(--text-muted)',
+            borderDefault: 'var(--border-default)',
+            neutral: { // Keep existing neutral palette for light mode
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
+              800: '#1e293b',
+              900: '#0f172a'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.2.0",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+    "@google/genai": "https://esm.sh/@google/genai@^1.5.1",
+    "react-dom/": "https://esm.sh/react-dom@18.2.0/",
+    "react/": "https://esm.sh/react@18.2.0/",
+    "uuid": "https://esm.sh/uuid@^11.1.0",
+    "@/components/icons": "./components/icons.tsx",
+    "@/components/SuperadminPanel": "./components/SuperadminPanel.tsx",
+    "@/utils": "./utils.ts",
+    "../utils": "./utils.ts",
+    "./utils": "./utils.ts",
+    "./services/authService": "./services/authService.ts",
+    "./services/productService": "./services/productService.ts",
+    "./services/dataServiceKeys": "./services/dataServiceKeys.ts",
+    "./services/businessSettingsService": "./services/businessSettingsService.ts",
+    "./services/cartService": "./services/cartService.ts",
+    "./services/orderService": "./services/orderService.ts",
+    "./services/onboardingService": "./services/onboardingService.ts",
+    "./services/aiService": "./services/aiService.ts",
+    "./services/adminAccountService": "./services/adminAccountService.ts",
+    "./services/subscriptionPlanService": "./services/subscriptionPlanService.ts",
+    "./services/aiProviderConfigService": "./services/aiProviderConfigService.ts",
+    "./services/adminMessagingService": "./services/adminMessagingService.ts",
+    "./services/backupService": "./services/backupService.ts",
+    "pg": "https://esm.sh/pg@^8.16.2",
+    "dotenv": "https://esm.sh/dotenv@^16.5.0",
+    "express": "https://esm.sh/express@^5.1.0",
+    "jsonwebtoken": "https://esm.sh/jsonwebtoken@^9.0.2",
+    "bcryptjs": "https://esm.sh/bcryptjs@^3.0.2",
+    "cors": "https://esm.sh/cors@^2.8.5"
+  }
+}
+</script>
+</head>
+<body class="bg-[var(--bg-default)] text-[var(--text-default)]">
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
